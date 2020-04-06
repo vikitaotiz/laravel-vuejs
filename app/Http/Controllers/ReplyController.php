@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ReplyResource;
 use App\Reply;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ReplyController extends Controller
 {
@@ -14,18 +16,11 @@ class ReplyController extends Controller
      */
     public function index()
     {
-        //
+        $replies = Reply::latest()->get();
+
+        return ReplyResource::collection($replies);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +30,9 @@ class ReplyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $reply = Reply::create($request->all());
+
+        return response($reply, Response::HTTP_CREATED);
     }
 
     /**
@@ -46,19 +43,9 @@ class ReplyController extends Controller
      */
     public function show(Reply $reply)
     {
-        //
+        return new ReplyResource($reply);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Reply  $reply
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Reply $reply)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -69,7 +56,9 @@ class ReplyController extends Controller
      */
     public function update(Request $request, Reply $reply)
     {
-        //
+        $reply = $reply->fill($request->all());
+
+        return response($reply, Response::HTTP_ACCEPTED);
     }
 
     /**
@@ -80,6 +69,8 @@ class ReplyController extends Controller
      */
     public function destroy(Reply $reply)
     {
-        //
+        $reply->delete();
+
+        return response('Reply deleted', Response::HTTP_NO_CONTENT);
     }
 }

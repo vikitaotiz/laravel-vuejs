@@ -26,14 +26,14 @@ class QuestionController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     */
+     */ 
     public function store(Request $request)
     {
         // auth()->user()->question()->create($request->all());
 
         $question = Question::create($request->all());
 
-        return response($question, Response::HTTP_CREATED);
+        return response(new QuestionResource($question), Response::HTTP_CREATED);
     }
 
     /**
@@ -58,7 +58,7 @@ class QuestionController extends Controller
     {
         $question = $question->fill($request->all());
 
-        return response($question);
+        return response(new QuestionResource($question), Response::HTTP_ACCEPTED);
     }
 
     /**
