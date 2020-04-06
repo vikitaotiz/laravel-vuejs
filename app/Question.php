@@ -6,6 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
 {
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    public function getPathAttribute()
+    {
+       return asset("api/question/$this->slug"); 
+    }
+
     protected $guarded = [];
 
     public function user()
